@@ -14,6 +14,8 @@ export function ConversationsProvider({ children }) {
     []
   );
 
+  const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
+
   const { contacts } = useContacts();
 
   function createConversation(recipients) {
@@ -22,7 +24,7 @@ export function ConversationsProvider({ children }) {
     });
   }
 
-  const formattedConversations = conversations.map((conversation) => {
+  const formattedConversations = conversations.map((conversation, index) => {
     const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
         return contact.id === recipient;
@@ -30,12 +32,15 @@ export function ConversationsProvider({ children }) {
       const name = (contact && contact.name) || recipient;
       return { id: recipient, name };
     });
+    const selected = index === selectedConversationIndex;
 
-    return { ...conversations, recipients };
+    return { ...conversations, recipients, selected };
   });
 
   const value = {
     conversations: formattedConversations,
+    selectedConversation: formattedConversations[selectedConversationIndex],
+    selectConversationIndex: setSelectedConversationIndex,
     createConversation,
   };
 
