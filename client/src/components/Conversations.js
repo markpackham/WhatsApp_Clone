@@ -11,7 +11,7 @@ export default function Conversations() {
         <ListGroup.Item
           key={index}
           action
-          onClick
+          onClick={() => selectConversationIndex(index)}
           active={conversation.selected}
         >
           {conversation.recipients.map((r) => r.name).join(", ")}
